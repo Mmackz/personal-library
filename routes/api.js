@@ -90,16 +90,16 @@ module.exports = function (app) {
          } else if (!isObjectId(id)) {
             res.send("no book exists");
          } else {
-            if (err) {
-               res.json({ error: "error searching database" });
-            } else if (!data) {
-               res.send("no book exists");
-            } else {
-               Book.findByIdAndUpdate(
-                  id,
-                  { $push: { comments: comment } },
-                  { new: true },
-                  (err, data) => {
+            Book.findByIdAndUpdate(
+               id,
+               { $push: { comments: comment } },
+               { new: true },
+               (err, data) => {
+                  if (err) {
+                     res.json({ error: "error searching database" });
+                  } else if (!data) {
+                     res.send("no book exists");
+                  } else {
                      res.json({
                         _id: data._id,
                         title: data.title,
@@ -107,8 +107,8 @@ module.exports = function (app) {
                         commentcount: data.comment_count
                      });
                   }
-               );
-            }
+               }
+            );
          }
       })
 
