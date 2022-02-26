@@ -85,7 +85,9 @@ module.exports = function (app) {
          const { id } = req.params;
          const { comment } = req.body;
 
-         if (!isObjectId(id)) {
+         if (!comment) {
+            res.send("missing required field comment");
+         } else if (!isObjectId(id)) {
             res.send("no book exists");
          } else {
             if (err) {
@@ -114,13 +116,13 @@ module.exports = function (app) {
          const { id } = req.params;
 
          if (!id || !isObjectId(id)) {
-            res.send("Not Found");
+            res.send("no book exists");
          } else {
             Book.findByIdAndDelete(id, (err, data) => {
                if (err) {
                   res.json({ error: "error searching database" });
                } else if (!data) {
-                  res.send("Not Found");
+                  res.send("no book exists");
                } else {
                   res.send("delete successful");
                }
