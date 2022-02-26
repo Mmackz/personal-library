@@ -35,7 +35,7 @@ module.exports = function (app) {
             res.send("missing required field title");
          } else {
             // emter book into database
-            const book = new Book({ title, comments: ["comment 1"] });
+            const book = new Book({ title });
             book.save((err, data) => {
                if (err) {
                   res.json({ error: "There was a db error (Title too long)" });
@@ -85,10 +85,10 @@ module.exports = function (app) {
          const { id } = req.params;
          const { comment } = req.body;
 
-         if (!comment) {
+         if (!isObjectId(id)) {
+            res.send("no book exists"); 
+         } else if (!comment) {
             res.send("missing required field comment");
-         } else if (!isObjectId(id)) {
-            res.send("no book exists");
          } else {
             Book.findByIdAndUpdate(
                id,
