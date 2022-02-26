@@ -14,7 +14,7 @@ const isObjectId = require("mongoose").isValidObjectId;
 
 module.exports = function (app) {
    app.route("/api/books")
-      .get(function (req, res, next) {
+      .get(function (req, res) {
          Book.find({}, (err, data) => {
             res.json(
                data.map((d) => ({
@@ -27,7 +27,7 @@ module.exports = function (app) {
          });
       })
 
-      .post(function (req, res, next) {
+      .post(function (req, res) {
          const { title } = req.body;
 
          // If no title, respond with error
